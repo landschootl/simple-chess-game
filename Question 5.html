@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<title>Question 4</title>
+		<script type="text/javascript">
+		<!--
+		function ajout(){
+			var list = document.getElementById("listecommissions")
+			var elem = document.createElement('li');
+			var valeur = document.createTextNode(document.getElementById("course").value);
+			elem.appendChild(valeur);
+			list.appendChild(elem);
+			document.getElementById("course").setValue("");
+		}
+		
+		function enlever(){
+			var list = document.getElementById("listecommissions")
+			list.removeChild(list.lastChild);
+		}
+		//-->
+		</script>
+	</head>
+	<body>
+		<input type="text" id="course"/>
+		<input type="button" value="Ajouter" onClick="ajout()"/>
+		<ul id="listecommissions">
+			<li>1kg de farine</li>
+			<li>un pack de lait</li>
+		</ul>
+		<input type="button" value="Enlever" onClick="enlever()"/>
+	</body>
+</html>

@@ -1,0 +1,175 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<title>Question 6</title>
+		
+		<style>
+			table{
+			    border-collapse:collapse;
+			}
+
+			td{
+			    height: 43px;
+			    width: 43px;
+			    padding: 0px;
+			}
+
+			table td {
+				border: 5px outset #F0F0F0;
+			}
+
+			img{
+				position: relative;
+				height: 38px;
+				width: 38px;
+			}
+
+			.buttonHelp {
+			    background-color: #4CAF50;
+			    border: none;
+			    color: white;
+			    padding: 15px 32px;
+			    text-align: center;
+			    text-decoration: none;
+			    display: inline-block;
+			    font-size: 16px;
+			}
+
+			.buttonSolution {
+			    background-color: red;
+			    border: none;
+			    color: white;
+			    padding: 15px 32px;
+			    text-align: center;
+			    text-decoration: none;
+			    display: inline-block;
+			    font-size: 16px;
+			}
+
+			.caseHelp{
+				background-color: blue !important;
+			}
+
+			.caseBlack{
+				background-color: black;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<center>
+			<h1>Echiquier</h1>
+			<table id="echiquier"></table>
+			<input type="button" class="buttonHelp" value="Help" onClick="help()"/>
+			<input type="button" class="buttonSolution" value="Solution" onClick="Solution()"/>
+			<p>Position du cavalier : <span id="posCavalier"></span></p>
+			<p>Nombre de cases parcourues : <span id="nombreCoup"></span></p>
+			<p>Les cases parcourues : <span id="caseParcouru"></span></p>
+		</center>
+
+		<script type="text/javascript">
+			var positionDepart = "0.4";
+			var lastPos = [positionDepart];
+
+			var cavalier = { 
+				position : positionDepart,
+				image : document.createElement("img")
+			}
+			cavalier.image.setAttribute("src","./cavalier.png");
+
+			function refreshInfo(){
+				document.getElementById("nombreCoup").innerHTML = lastPos.length;
+				document.getElementById("caseParcouru").innerHTML = lastPos;
+				document.getElementById("posCavalier").innerHTML = cavalier.position;
+			}
+
+			function initEchiquier(){
+				var echiquier = document.getElementById('echiquier');
+				for(var i=0; i<8; i++){
+					var ligne = document.createElement('tr');
+					for(var j=0; j<8; j++){
+						var caseEchiquier = document.createElement('td');
+						caseEchiquier.onCLick = "move()";
+						caseEchiquier.id = i+"."+j;
+						caseEchiquier.setAttribute("onclick","move(this)");
+						if(i%2==0){
+							if(j%2==0)
+								caseEchiquier.classList.add("caseBlack");
+						} else {
+							if(j%2!=0)
+								caseEchiquier.classList.add("caseBlack");
+						}
+						ligne.appendChild(caseEchiquier);
+					}
+					echiquier.appendChild(ligne);
+				}
+				document.getElementById(positionDepart).appendChild(cavalier.image);
+			}
+
+			function move(element){
+				if(isMove(cavalier.position, element.id)){
+					lastPos.push(element.id);
+					cavalier.position = element.id;
+					document.getElementById(lastPos[lastPos.length-2]).style.backgroundColor="#FF99FF";
+					document.getElementById(lastPos[lastPos.length-2]).removeChild(cavalier.image);
+					element.appendChild(cavalier.image);
+					refreshInfo();
+					refreshHelp();
+				}
+			}
+
+			function isMove(posCavalier, posCase){
+				for(var i=0; i<lastPos.length; i++){
+					if(lastPos[i]==posCase){
+						return false;
+					}
+				}
+				if((Math.abs(getPosX(posCase)-getPosX(posCavalier))==1 && Math.abs(getPosY(posCase)-getPosY(posCavalier))==2) || (Math.abs(getPosX(posCase)-getPosX(posCavalier))==2 && Math.abs(getPosY(posCase)-getPosY(posCavalier))==1)){
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			function getPosX(valeur){
+				return valeur.substring(0,1);
+			}
+			
+			function getPosY(valeur){
+				return valeur.substring(2,3);
+			}
+
+			function help(){
+				for(var i=0; i<8; i++){
+					for(var j=0; j<8; j++){
+						var element = document.getElementById(i+"."+j);
+						if(isMove(cavalier.position, element.id)){
+							element.classList.add("caseHelp");
+						}
+					}
+				}
+			}
+
+			function refreshHelp(){
+				for(var i=0; i<8; i++){
+					for(var j=0; j<8; j++){
+						var element = document.getElementById(i+"."+j);
+						if(element.classList.contains("caseHelp")){
+							element.classList.remove("caseHelp");
+						}
+					}
+				}
+			}
+
+			function solution(){
+
+			}
+
+			function main(){
+				initEchiquier();
+				refreshInfo();
+			}
+			main();
+		</script>
+	</body>
+</html>
